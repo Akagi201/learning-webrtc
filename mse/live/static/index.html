@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>MSE Live Demo</title>
+    <link href="video-js.css" rel="stylesheet">
+    <script src="videojs-ie8.min.js"></script>
+</head>
+<body>
+<h1>MSE Live Demo</h1>
+<video id="my-video" autoplay controls></video>
+<script src="video.js"></script>
+<script src="mux.js"></script>
+<script src="flow-mux.js"></script>
+<script src="flow.js"></script>
+<script>
+    // application.
+    var mediaSource = new MediaSource();
+    var video = document.getElementById("my-video");
+    video.src = URL.createObjectURL(mediaSource);
+    mediaSource.addEventListener('sourceopen', function (_) {
+        var audioSourceBuffer = mediaSource.addSourceBuffer('video/mp4;codecs="mp4a.40.2"');
+        var videoSourceBuffer = mediaSource.addSourceBuffer('video/mp4;codecs="avc1.42E01E"');
+        var flow = new FlowTransmuxer();
+        // append mp4 segment to mse.
+        flow.on('data', function (segment) {
+            if (segment.type == 'audio') {
+                audioSourceBuffer.appendBuffer(segment.data.buffer);
+            } else {
+                videoSourceBuffer.appendBuffer(segment.data.buffer);
+            }
+        });
+        var url = "ws://localhost:8327/media";
+        console.log('start play flow ' + url);
+        flow.src(url);
+    });
+</script>
+</body>
+</html>

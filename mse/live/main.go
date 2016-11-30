@@ -1,7 +1,8 @@
 package main
 
 import (
-	"os"
+	"fmt"
+	"net/http"
 	"strings"
 
 	"github.com/Akagi201/light"
@@ -15,8 +16,8 @@ import (
 var opts struct {
 	ListenAddr string `long:"listen" default:"0.0.0.0:8327" description:"HTTP listen address and port"`
 	StaticPath string `long:"static" default:"./static" description:"Path of static files"`
-	MediaFile  string `long:"media" default:"./static/test.mp4" description:"Path of media file for vod"`
-	Buffer     int    `long:"buffer" default:"10240000" description:"Send media buffer size"`
+	HTTPFLVURL string `long:"httpflv" default:"http://uplive.b0.upaiyun.com/live/loading.flv" description:"HTTP flv stream url"`
+	Buffer     int    `long:"buffer" default:"1024" description:"Send media buffer size"`
 }
 
 var log *logrus.Logger
@@ -31,23 +32,28 @@ func init() {
 }
 
 func handleMedia(ws *websocket.Conn) {
-	b := make([]byte, opts.Buffer)
+	r := ws.Request()
 
-	f, err := os.OpenFile(opts.MediaFile, os.O_RDONLY, 0600)
+	log.Println("Proxy client", r.RemoteAddr, "to", opts.HTTPFLVURL)
+	defer ws.Close()
+
+	flv, err := http.Get(opts.HTTPFLVURL)
 	if err != nil {
-		log.Printf("Open file failed, err: %v", err)
+		fmt.Println("Connect backend", opts.HTTPFLVURL, "failed, err is", err)
 		return
 	}
-	defer f.Close()
+	defer flv.Body.Close()
+
+	b := make([]byte, opts.Buffer)
 	for {
-		n, err := f.Read(b)
-		if err != nil {
-			log.Printf("Read file failed, err: %v", err)
+		var n int
+		if n, err = flv.Body.Read(b); err != nil {
+			fmt.Println("Recv from backend failed, err is", err)
 			return
 		}
-		err = websocket.Message.Send(ws, b[0:n])
-		if err != nil {
-			log.Printf("WebSocket send media buffer failed, err: %v", err)
+
+		if err = websocket.Message.Send(ws, b[:n]); err != nil {
+			fmt.Println("Send to ws failed, err is", err)
 			return
 		}
 	}
