@@ -4,3 +4,5 @@ node_modules
 .DS_Store
 validation-report.json
 validation-status.json
+/mse/live/live
+/mse/vod/vod
