@@ -7,8 +7,6 @@ import (
 
 	"github.com/Akagi201/light"
 	"github.com/Sirupsen/logrus"
-	"github.com/gohttp/mount"
-	"github.com/gohttp/serve"
 	"github.com/jessevdk/go-flags"
 	"golang.org/x/net/websocket"
 )
@@ -69,12 +67,12 @@ func main() {
 		}
 	}
 
-	app := light.New()
+	root := light.New()
 
-	app.Use(serve.New("static"))
-	app.Use(mount.New("/static", serve.New("static")))
-	app.Get("/media", websocket.Handler(handleMedia))
+	root.ServeFiles("/live/*filepath", http.Dir("./static"))
+	root.Get("/", http.RedirectHandler("/live", http.StatusFound).ServeHTTP)
+	root.Get("/media", websocket.Handler(handleMedia).ServeHTTP)
 
 	log.Printf("HTTP listening at: %v", opts.ListenAddr)
-	app.Listen(opts.ListenAddr)
+	http.ListenAndServe(opts.ListenAddr, root)
 }
