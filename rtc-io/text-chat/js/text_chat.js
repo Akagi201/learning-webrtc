@@ -1,7 +1,7 @@
 // Set RTC options.
 var rtcOpts = {
     room: 'test-data',
-    signaller: 'http://10.0.2.246:3000',
+    signaller: 'http://10.0.6.22:8327',
     capture: false
 };
 

@@ -1,9 +1,9 @@
-'use strict'
+//'use strict'
 
 // Set RTC options.
 var rtcOpts = {
     room: 'test-room',
-    signaller: 'http://10.0.2.246:3000'
+    signaller: 'http://10.0.6.22:8327'
 };
 // call RTC module
 var rtc = RTC(rtcOpts);
