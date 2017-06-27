@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="WebRTC RTCDataChannel">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>WebRTC RTCDataChannel</title>
+
+    <link href="//fonts.googleapis.com/css?family=PT+Serif:400,400i,700,700i" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div id="container">
+
+        <h1>WebRTC RTCDataChannel sample</h1>
+
+        <div id="buttons">
+            <button id="startButton">Start</button>
+            <button id="sendButton" disabled>Send</button>
+            <button id="closeButton" disabled>Stop</button>
+        </div>
+
+        <div id="sendReceive">
+            <div id="send">
+                <h2>Send</h2>
+                <textarea id="dataChannelSend" disabled placeholder="Press Start, enter some text, then press Send."></textarea>
+            </div>
+            <div id="receive">
+                <h2>Receive</h2>
+                <textarea id="dataChannelReceive" disabled></textarea>
+            </div>
+        </div>
+
+        <p>View the console to see logging.</p>
+    </div>
+
+    <script src="//webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>

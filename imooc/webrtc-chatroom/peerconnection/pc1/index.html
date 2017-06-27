@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="WebRTC RTCPeerConnection">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>WebRTC RTCPeerConnection</title>
+
+    <link href="//fonts.googleapis.com/css?family=PT+Serif:400,400i,700,700i" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div id="container">
+        <h1>WebRTC RTCPeerConnection sample</h1>
+
+        <video id="localVideo" autoplay muted></video>
+        <video id="remoteVideo" autoplay></video>
+
+        <div>
+            <button id="startButton">Start</button>
+            <button id="callButton">Call</button>
+            <button id="hangupButton">Hang Up</button>
+        </div>
+
+        <p>View the console to see logging.</p>
+    </div>
+
+    <script src="//webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>
