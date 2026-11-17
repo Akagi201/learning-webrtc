@@ -1,1 +1,1 @@
-WebRTC connection test utility. Run to check your WebRTC setup.
+Utility tools for this project. Run the exe for setup.
